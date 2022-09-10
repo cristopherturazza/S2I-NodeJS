@@ -20,9 +20,10 @@ const intervalById = async (req, res) => {
 
 const addInterval = async (req, res) => {
   const interval = new Interval({
+    owner: req.body.owner,
     startdate: req.body.startdate,
     enddate: req.body.enddate,
-    userid: req.body.userid,
+    target: req.body.target,
   });
   try {
     const savedInterval = await interval.save();
@@ -49,9 +50,14 @@ const updateInterval = async (req, res) => {
       { _id: req.params.intervalId },
       {
         $set: {
+          owner: req.body.owner,
           startdate: req.body.startdate,
           enddate: req.body.enddate,
-          userid: req.body.userid,
+          target: {
+            title: req.body.title,
+            description: req.body.description,
+            progress: req.body.progress,
+          },
         },
       }
     );
