@@ -27,7 +27,7 @@ const addUser = async (req, res) => {
 
   try {
     const savedUser = await user.save();
-    res.status(200).json(savedUser);
+    res.status(201).json(savedUser);
   } catch (err) {
     res.status(400).json({ message: err });
   }

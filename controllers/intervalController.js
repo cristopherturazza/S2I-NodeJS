@@ -1,4 +1,11 @@
 const Interval = require("../models/interval");
+const Target = require("../models/target");
+
+Date.prototype.addDays = function (days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+};
 
 const intervalList = async (req, res) => {
   try {
@@ -18,16 +25,30 @@ const intervalById = async (req, res) => {
   }
 };
 
+const searchIntervals = async (req, res) => {
+  const { target, startdate, enddate } = req.query;
+  let filteredIntervals = await Interval.find();
+
+  if (target) {
+    filteredIntervals = filteredIntervals.filter(
+      (interval) => interval.target == target
+    );
+  }
+  res.status(200).json(filteredIntervals);
+};
+
 const addInterval = async (req, res) => {
+  const target = await Target.findById(req.body.target);
+  const today = new Date();
   const interval = new Interval({
     owner: req.body.owner,
-    startdate: req.body.startdate,
-    enddate: req.body.enddate,
     target: req.body.target,
+    startdate: today,
+    enddate: today.addDays(target.days),
   });
   try {
     const savedInterval = await interval.save();
-    res.status(200).json(savedInterval);
+    res.status(201).json(savedInterval);
   } catch (err) {
     res.status(400).json({ message: err });
   }
@@ -53,11 +74,7 @@ const updateInterval = async (req, res) => {
           owner: req.body.owner,
           startdate: req.body.startdate,
           enddate: req.body.enddate,
-          target: {
-            title: req.body.title,
-            description: req.body.description,
-            progress: req.body.progress,
-          },
+          target: req.body.target,
         },
       }
     );
@@ -71,6 +88,7 @@ module.exports = {
   intervalList,
   intervalById,
   addInterval,
+  searchIntervals,
   removeInterval,
   updateInterval,
 };

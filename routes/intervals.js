@@ -4,6 +4,7 @@ const {
   intervalList,
   intervalById,
   addInterval,
+  searchIntervals,
   removeInterval,
   updateInterval,
 } = require("../controllers/intervalController");
@@ -11,10 +12,13 @@ const {
 // all intervals list
 router.get("/", intervalList);
 
-//specific interval by Id
+// search intervals by query
+router.get("/search", searchIntervals);
+
+// specific interval by Id
 router.get("/:intervalId", intervalById);
 
-//add a new interval
+// add a new interval
 router.post("/", addInterval);
 
 // delete interval by Id

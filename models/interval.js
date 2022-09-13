@@ -16,21 +16,8 @@ const intervalSchema = new Schema({
     required: true,
   },
   target: {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    progress: {
-      type: Number,
-      required: true,
-      default: 0,
-      min: 0,
-      max: 100,
-    },
+    type: mongoose.ObjectId,
+    required: true,
   },
 });
 
