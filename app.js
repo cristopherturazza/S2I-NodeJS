@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
+const { celebrate, Joi, errors, Segments } = require("celebrate");
 
 //dotenv for db uri
 require("dotenv").config();

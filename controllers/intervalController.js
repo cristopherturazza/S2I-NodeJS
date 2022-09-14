@@ -1,11 +1,15 @@
 const Interval = require("../models/interval");
 const Target = require("../models/target");
 
+// sum days function
+
 Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
   return date;
 };
+
+// all intervals
 
 const intervalList = async (req, res) => {
   try {
@@ -16,6 +20,8 @@ const intervalList = async (req, res) => {
   }
 };
 
+// interval by Id
+
 const intervalById = async (req, res) => {
   try {
     const interval = await Interval.findById(req.params.intervalId);
@@ -24,6 +30,8 @@ const intervalById = async (req, res) => {
     res.status(400).json({ message: err });
   }
 };
+
+// filter interval by queries
 
 const searchIntervals = async (req, res) => {
   const { target, startdate, enddate } = req.query;
@@ -34,8 +42,23 @@ const searchIntervals = async (req, res) => {
       (interval) => interval.target == target
     );
   }
+
+  if (startdate) {
+    const d = new Date(startdate);
+    filteredIntervals = filteredIntervals.filter(
+      (interval) => interval.startdate >= d
+    );
+  }
+  if (enddate) {
+    const d = new Date(enddate);
+    filteredIntervals = filteredIntervals.filter(
+      (interval) => interval.enddate <= d
+    );
+  }
   res.status(200).json(filteredIntervals);
 };
+
+// add a new interval
 
 const addInterval = async (req, res) => {
   const target = await Target.findById(req.body.target);
@@ -54,6 +77,8 @@ const addInterval = async (req, res) => {
   }
 };
 
+// remove an interval
+
 const removeInterval = async (req, res) => {
   try {
     const removedInterval = await Interval.deleteOne({
@@ -65,6 +90,8 @@ const removeInterval = async (req, res) => {
   }
 };
 
+// update an interval
+
 const updateInterval = async (req, res) => {
   try {
     const updatedInterval = await Interval.updateOne(
@@ -72,8 +99,6 @@ const updateInterval = async (req, res) => {
       {
         $set: {
           owner: req.body.owner,
-          startdate: req.body.startdate,
-          enddate: req.body.enddate,
           target: req.body.target,
         },
       }
