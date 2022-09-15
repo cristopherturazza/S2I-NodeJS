@@ -16,10 +16,33 @@ Joi.objectId = require("joi-objectid")(Joi);
 router.get("/", intervalList);
 
 // search intervals by query
-router.get("/search", searchIntervals);
+router.get(
+  "/search",
+  celebrate({
+    [Segments.QUERY]: Joi.object()
+      .keys({
+        owner: Joi.objectId(),
+        target: Joi.objectId(),
+        startdate: Joi.date().iso(),
+        enddate: Joi.date().iso(),
+      })
+      .unknown(),
+  }),
+  searchIntervals
+);
 
 // specific interval by Id
-router.get("/:intervalId", intervalById);
+router.get(
+  "/:intervalId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object()
+      .keys({
+        intervalId: Joi.objectId(),
+      })
+      .unknown(),
+  }),
+  intervalById
+);
 
 // add a new interval
 router.post(
@@ -34,10 +57,30 @@ router.post(
 );
 
 // delete interval by Id
-router.delete("/:intervalId", removeInterval);
+router.delete(
+  "/:intervalId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object()
+      .keys({
+        intervalId: Joi.objectId(),
+      })
+      .unknown(),
+  }),
+  removeInterval
+);
 
 // update interval by Id
-router.patch("/:intervalId", updateInterval);
+router.patch(
+  "/:intervalId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object()
+      .keys({
+        intervalId: Joi.objectId(),
+      })
+      .unknown(),
+  }),
+  updateInterval
+);
 
 router.use(errors());
 

@@ -34,9 +34,14 @@ const intervalById = async (req, res) => {
 // filter interval by queries
 
 const searchIntervals = async (req, res) => {
-  const { target, startdate, enddate } = req.query;
+  const { owner, target, startdate, enddate } = req.query;
   let filteredIntervals = await Interval.find();
 
+  if (owner) {
+    filteredIntervals = filteredIntervals.filter(
+      (interval) => interval.owner == owner
+    );
+  }
   if (target) {
     filteredIntervals = filteredIntervals.filter(
       (interval) => interval.target == target

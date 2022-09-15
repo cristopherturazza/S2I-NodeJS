@@ -9,12 +9,23 @@ const {
 } = require("../controllers/userController");
 
 const { celebrate, Joi, errors, Segments } = require("celebrate");
+Joi.objectId = require("joi-objectid")(Joi);
 
 // all users list
 router.get("/", userList);
 
 //specific user by Id
-router.get("/:userId", userById);
+router.get(
+  "/:userId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object()
+      .keys({
+        userId: Joi.objectId(),
+      })
+      .unknown(),
+  }),
+  userById
+);
 
 //add a new user
 router.post(
@@ -30,10 +41,30 @@ router.post(
 );
 
 // delete user by Id
-router.delete("/:userId", removeUser);
+router.delete(
+  "/:userId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object()
+      .keys({
+        userId: Joi.objectId(),
+      })
+      .unknown(),
+  }),
+  removeUser
+);
 
 // update user by Id
-router.patch("/:userId", updateUser);
+router.patch(
+  "/:userId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object()
+      .keys({
+        userId: Joi.objectId(),
+      })
+      .unknown(),
+  }),
+  updateUser
+);
 
 router.use(errors());
 
