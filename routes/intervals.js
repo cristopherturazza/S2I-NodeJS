@@ -9,6 +9,9 @@ const {
   updateInterval,
 } = require("../controllers/intervalController");
 
+const { celebrate, errors, Joi, Segments } = require("celebrate");
+Joi.objectId = require("joi-objectid")(Joi);
+
 // all intervals list
 router.get("/", intervalList);
 
@@ -19,12 +22,23 @@ router.get("/search", searchIntervals);
 router.get("/:intervalId", intervalById);
 
 // add a new interval
-router.post("/", addInterval);
+router.post(
+  "/",
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      owner: Joi.objectId().required(),
+      target: Joi.objectId().required(),
+    }),
+  }),
+  addInterval
+);
 
 // delete interval by Id
 router.delete("/:intervalId", removeInterval);
 
 // update interval by Id
 router.patch("/:intervalId", updateInterval);
+
+router.use(errors());
 
 module.exports = router;

@@ -8,6 +8,8 @@ const {
   updateUser,
 } = require("../controllers/userController");
 
+const { celebrate, Joi, errors, Segments } = require("celebrate");
+
 // all users list
 router.get("/", userList);
 
@@ -15,12 +17,24 @@ router.get("/", userList);
 router.get("/:userId", userById);
 
 //add a new user
-router.post("/", addUser);
+router.post(
+  "/",
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().alphanum().min(2).max(30).required(),
+      surname: Joi.string().alphanum().min(2).max(30).required(),
+      email: Joi.string().required().email(),
+    }),
+  }),
+  addUser
+);
 
 // delete user by Id
 router.delete("/:userId", removeUser);
 
 // update user by Id
 router.patch("/:userId", updateUser);
+
+router.use(errors());
 
 module.exports = router;
