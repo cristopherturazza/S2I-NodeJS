@@ -98,6 +98,8 @@ const removeInterval = async (req, res) => {
 // update an interval
 
 const updateInterval = async (req, res) => {
+  const target = await Target.findById(req.body.target);
+  const d = new Date(req.body.startdate);
   try {
     const updatedInterval = await Interval.updateOne(
       { _id: req.params.intervalId },
@@ -105,6 +107,8 @@ const updateInterval = async (req, res) => {
         $set: {
           owner: req.body.owner,
           target: req.body.target,
+          startdate: req.body.startdate,
+          enddate: d.addDays(target.days),
         },
       }
     );
