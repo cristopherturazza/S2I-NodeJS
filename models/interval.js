@@ -15,10 +15,6 @@ const intervalSchema = new Schema({
     type: Date,
     required: true,
   },
-  target: {
-    type: mongoose.ObjectId,
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("Interval", intervalSchema);

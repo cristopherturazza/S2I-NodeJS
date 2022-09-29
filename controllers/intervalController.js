@@ -1,13 +1,4 @@
 const Interval = require("../models/interval");
-const Target = require("../models/target");
-
-// sum days function
-
-Date.prototype.addDays = function (days) {
-  var date = new Date(this.valueOf());
-  date.setDate(date.getDate() + days);
-  return date;
-};
 
 // all intervals
 
@@ -34,17 +25,12 @@ const intervalById = async (req, res) => {
 // filter interval by queries
 
 const searchIntervals = async (req, res) => {
-  const { owner, target, startdate, enddate } = req.query;
+  const { owner, startdate, enddate } = req.query;
   let filteredIntervals = await Interval.find();
 
   if (owner) {
     filteredIntervals = filteredIntervals.filter(
       (interval) => interval.owner == owner
-    );
-  }
-  if (target) {
-    filteredIntervals = filteredIntervals.filter(
-      (interval) => interval.target == target
     );
   }
 
@@ -66,13 +52,10 @@ const searchIntervals = async (req, res) => {
 // add a new interval
 
 const addInterval = async (req, res) => {
-  const target = await Target.findById(req.body.target);
-  const today = new Date();
   const interval = new Interval({
     owner: req.body.owner,
-    target: req.body.target,
-    startdate: today,
-    enddate: today.addDays(target.days),
+    startdate: req.body.startdate,
+    enddate: req.body.enddate,
   });
   try {
     const savedInterval = await interval.save();
@@ -98,17 +81,14 @@ const removeInterval = async (req, res) => {
 // update an interval
 
 const updateInterval = async (req, res) => {
-  const target = await Target.findById(req.body.target);
-  const d = new Date(req.body.startdate);
   try {
     const updatedInterval = await Interval.updateOne(
       { _id: req.params.intervalId },
       {
         $set: {
           owner: req.body.owner,
-          target: req.body.target,
           startdate: req.body.startdate,
-          enddate: d.addDays(target.days),
+          enddate: req.body.enddate,
         },
       }
     );

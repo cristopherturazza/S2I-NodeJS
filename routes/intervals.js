@@ -22,7 +22,6 @@ router.get(
     [Segments.QUERY]: Joi.object()
       .keys({
         owner: Joi.objectId(),
-        target: Joi.objectId(),
         startdate: Joi.date().iso(),
         enddate: Joi.date().iso(),
       })
@@ -50,7 +49,8 @@ router.post(
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       owner: Joi.objectId().required(),
-      target: Joi.objectId().required(),
+      startdate: Joi.date().iso(),
+      enddate: Joi.date().iso(),
     }),
   }),
   addInterval

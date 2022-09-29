@@ -29,14 +29,14 @@ app.use("/users", usersRoute);
 app.use("/intervals", intervalsRoute);
 app.use("/targets", targetsRoute);
 
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res
     .status(200)
     .json({ message: "Welcome to MeditAPI. Read the API docs before use" });
 });
 
 // error 404
-app.use("*", (req, res) => {
+app.get("*", (req, res) => {
   res.status(404).json({ message: "404 Not Found" });
 });
 
