@@ -42,7 +42,7 @@ app.get("*", (req, res) => {
 
 //connect to the db with mongoose
 mongoose
-  .connect(process.env.ATLAS_URI, {
+  .connect(process.env.DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

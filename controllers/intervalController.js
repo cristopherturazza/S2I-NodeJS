@@ -1,4 +1,5 @@
 const Interval = require("../models/interval");
+const Target = require("../models/target");
 
 // all intervals
 
@@ -25,7 +26,7 @@ const intervalById = async (req, res) => {
 // filter interval by queries
 
 const searchIntervals = async (req, res) => {
-  const { owner, startdate, enddate } = req.query;
+  const { owner, startdate, enddate, target } = req.query;
   let filteredIntervals = await Interval.find();
 
   if (owner) {
@@ -46,6 +47,14 @@ const searchIntervals = async (req, res) => {
       (interval) => interval.enddate <= d
     );
   }
+  if (target) {
+    const targetFind = await Target.findById(target);
+    const hisIntervals = targetFind.intervals;
+    filteredIntervals = filteredIntervals.filter((interval) =>
+      hisIntervals.includes(interval.id)
+    );
+  }
+
   res.status(200).json(filteredIntervals);
 };
 
@@ -82,6 +91,23 @@ const removeInterval = async (req, res) => {
 
 const updateInterval = async (req, res) => {
   try {
+    // check if the startdate still before enddate when receive only startdate or only enddate update
+
+    const actual = await Interval.findById(req.params.intervalId);
+    const newStartDate = new Date(req.body.startdate);
+    const newEndDate = new Date(req.body.enddate);
+
+    if (newStartDate >= actual.enddate && !Object.hasOwn(req.body, "enddate"))
+      throw "not allowed startdate";
+    if (newEndDate <= actual.startdate && !Object.hasOwn(req.body, "startdate"))
+      throw "not allowed enddate";
+    if (
+      Object.hasOwn(req.body, "startdate") &&
+      Object.hasOwn(req.body, "enddate") &&
+      newStartDate >= newEndDate
+    )
+      throw "not allowed range";
+
     const updatedInterval = await Interval.updateOne(
       { _id: req.params.intervalId },
       {

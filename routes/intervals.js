@@ -24,6 +24,7 @@ router.get(
         owner: Joi.objectId(),
         startdate: Joi.date().iso(),
         enddate: Joi.date().iso(),
+        target: Joi.objectId(),
       })
       .unknown(),
   }),
@@ -49,8 +50,8 @@ router.post(
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       owner: Joi.objectId().required(),
-      startdate: Joi.date().iso(),
-      enddate: Joi.date().iso(),
+      startdate: Joi.date().iso().required(),
+      enddate: Joi.date().iso().greater(Joi.ref("startdate")).required(), //check enddate after the startdate
     }),
   }),
   addInterval
@@ -76,6 +77,13 @@ router.patch(
     [Segments.PARAMS]: Joi.object()
       .keys({
         intervalId: Joi.objectId(),
+      })
+      .unknown(),
+    [Segments.BODY]: Joi.object()
+      .keys({
+        owner: Joi.objectId(),
+        startdate: Joi.date().iso(), //checked in the controller
+        enddate: Joi.date().iso(), //checked in the controller
       })
       .unknown(),
   }),
