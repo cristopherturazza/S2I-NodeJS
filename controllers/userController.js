@@ -3,18 +3,20 @@ const User = require("../models/user");
 const userList = async (req, res) => {
   try {
     const users = await User.find();
+    if (!users) throw "not found";
     res.status(200).json(users);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
 const userById = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
+    if (!user) throw "not found";
     res.status(200).json(user);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -29,7 +31,7 @@ const addUser = async (req, res) => {
     const savedUser = await user.save();
     res.status(201).json(savedUser);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -38,7 +40,7 @@ const removeUser = async (req, res) => {
     const removedUser = await User.deleteOne({ _id: req.params.userId });
     res.status(200).json(removedUser);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -56,7 +58,7 @@ const updateUser = async (req, res) => {
     );
     res.status(200).json(updatedUser);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 

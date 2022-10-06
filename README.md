@@ -1,10 +1,10 @@
-# MeditAPI :pray:
+# :pray: MeditAPI
 
 REST API for a meditation application.
 
 ## :question: Why
 
-This project is the final practice for start2impact Node.js course.<br>
+This project is the final practice for start2impact Node.js course.
 
 ## :bulb: How it works
 
@@ -29,9 +29,9 @@ For this project where used Node.js (with Express framework) and MongoDB databas
 
 ## :floppy_disk: Installation
 
-First of all, you need Node.js installed.<br>
+First of all, you need Node.js installed.  
 If you don't have it, you can download it here:
-[Node.js](https://nodejs.org/it/download/)<br>
+[Node.js](https://nodejs.org/it/download/)  
 After the installation, you're ready to go.
 
 ### 1 - Clone the repository
@@ -42,13 +42,13 @@ After the installation, you're ready to go.
 
 `npm install`
 
-### 3 - Start it!
+### 3 - Start it
 
 `npm start`
 
 ### 4 - Connect your MongoDB database
 
-Create, if don't exist, a `.env` file and the insert an enviroment variable named `DB_URI`with your MongoDB connection string.<br>
+Create, if don't exist, a `.env` file and the insert an enviroment variable named `DB_URI`with your MongoDB connection string.  
 Example:
 `DB_URI="mongodb+srv://...`
 
@@ -57,6 +57,58 @@ Example:
 Using something like Postman, Thunderclient or Insomnia, you can start using this API on the port 3000.
 
 ## Endpoints
+
+### Users
+
+You can get the entire users list with a GET request:
+
+`/users`
+
+or GET data for a specific user:
+
+`/users/:userID`
+
+:userID must be a valid MongoDB id.  
+You can PATCH or DELETE user data with the same endpoint.
+
+Finally, you can add a new user with a POST request:
+
+`/users`
+
+```json
+{
+    "name": "insert an alphanumeric string, min 2 characters",
+    "surname": "insert an alphanumeric string, min 2 characters"
+    "email": "insert a valid email"
+}
+```
+
+### Targets
+
+You can get the entire targets list with a GET request:
+
+`/targets`
+
+or GET data for a specific target:
+
+`/targets/:targetID`
+
+:targetID must be a valid MongoDB id.  
+You can PATCH or DELETE a target with the same endpoint.
+
+Finally, you can add a new target with a POST request:
+
+`/targets`
+
+```json
+{
+    "title": "insert a, min 2 characters, max 30",
+    "description": "insert a string, min 2 characters, max 300"
+    "days": "insert a number"
+}
+```
+
+### Intervals
 
 ## :page_with_curl: License
 

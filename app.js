@@ -3,9 +3,6 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
 
-//dotenv for db uri
-require("dotenv").config();
-
 const app = express();
 const usersRoute = require("./routes/users");
 const intervalsRoute = require("./routes/intervals");
@@ -40,11 +37,4 @@ app.get("*", (req, res) => {
   res.status(404).json({ message: "404 Not Found" });
 });
 
-//connect to the db with mongoose
-mongoose
-  .connect(process.env.DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then((result) => app.listen(3000))
-  .catch((err) => console.log(err));
+module.exports = app;
