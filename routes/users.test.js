@@ -81,7 +81,6 @@ describe("Users Endpoint", () => {
       .then((response) => {
         expect(response.body).toEqual(
           expect.objectContaining({
-            __v: expect.any(Number),
             _id: expect.any(String),
             name: expect.any(String),
             surname: expect.any(String),

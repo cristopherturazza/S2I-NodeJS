@@ -110,6 +110,53 @@ Finally, you can add a new target with a POST request:
 
 ### Intervals
 
+You can get all the available targets with a GET request
+
+`/intervals`
+
+or GET data for a specific interval:
+
+`/intervals/:intervalID`
+
+You can PATCH or DELETE a target with the same endpoint.
+
+For a new interval, use a POST request:
+
+`/intervals`
+
+```json
+{
+  "owner": "insert a valid mongoID that rappresent the interval user owner",
+  "startdate": "insert a valid ISO date",
+  "enddate": "insert a valid ISO date, greater than the startdate"
+}
+```
+
+You can filter through the intervals with a SEARCH query:
+
+`/intervals/search`
+
+Filter parameters:
+
+- startdate: insert a valid ISO start date (e.g. 2018-05-22), returns intervals with a greater start date
+- enddate: insert a valid ISO end date (e.g. 2020-03-10), return intervals with a lower end date
+- target: insert a valid MongoDB Id that rappresent a target
+- owner: inser a valid MongoDB Id that rappresent an user
+
+example: `/intervals/search?target=6335c098bb3ddb89f54cd3d6&startdate=2022-08-01`
+
+## Interval / Target
+
+You can join an intervals to a target with a PATCH request on this endpoint:
+
+`/targets/:targetID/intervals`
+
+```json
+{
+  "target": "insert a valid MongoDB Id of a target"
+}
+```
+
 ## :page_with_curl: License
 
 [MIT](https://choosealicense.com/licenses/mit/)

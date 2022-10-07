@@ -31,7 +31,7 @@ const searchIntervals = async (req, res) => {
 
   if (owner) {
     filteredIntervals = filteredIntervals.filter(
-      (interval) => interval.owner == owner
+      (interval) => interval.owner === owner
     );
   }
 

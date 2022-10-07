@@ -7,7 +7,7 @@ const targetList = async (req, res) => {
     const targets = await Target.find();
     res.status(200).json(targets);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -18,7 +18,7 @@ const targetById = async (req, res) => {
     const target = await Target.findById(req.params.targetId);
     res.status(200).json(target);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -35,7 +35,7 @@ const addTarget = async (req, res) => {
     const savedTarget = await target.save();
     res.status(201).json(savedTarget);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -48,7 +48,7 @@ const removeTarget = async (req, res) => {
     });
     res.status(200).json(removedTarget);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -68,7 +68,7 @@ const updateTarget = async (req, res) => {
     );
     res.status(200).json(updatedTarget);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -80,7 +80,7 @@ const addTargetIntervals = async (req, res) => {
     );
     res.status(200).json(addInterval);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
@@ -92,7 +92,7 @@ const removeTargetIntervals = async (req, res) => {
     );
     res.status(200).json(removeInterval);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(404).json({ message: err });
   }
 };
 
