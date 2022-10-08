@@ -56,7 +56,7 @@ Example:
 
 Using something like Postman, Thunderclient or Insomnia, you can start using this API on the port 3000.
 
-## Endpoints
+## :open_file_folder: Endpoints
 
 ### Users
 
@@ -145,7 +145,7 @@ Filter parameters:
 
 example: `/intervals/search?target=6335c098bb3ddb89f54cd3d6&startdate=2022-08-01`
 
-## Interval / Target
+## Intervals / Targets
 
 You can join an intervals to a target with a PATCH request on this endpoint:
 

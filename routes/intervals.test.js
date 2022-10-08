@@ -3,6 +3,7 @@ const Interval = require("../models/interval");
 const app = require("../app");
 
 const { connectDB, disconnectDB } = require("../database");
+const { response } = require("../app");
 const request = supertest(app);
 
 const dummyInterval = new Interval({
@@ -93,6 +94,32 @@ describe("Intervals Endpoint", () => {
       .send(badIntervalDateFormat)
       .expect("Content-Type", /json/)
       .expect(400);
+  });
+
+  it("saerch intervals with queries and found it", async () => {
+    const goodQuery = {
+      startdate: "2022-09-20",
+      owner: "631c8c9694ebae7ccb8258b9",
+    };
+
+    return await request
+      .get(
+        `/intervals/search?startdate=${goodQuery.startdate}&owner=${goodQuery.owner}`
+      )
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              _id: expect.any(String),
+              owner: expect.any(String),
+              startdate: expect.any(String),
+              enddate: expect.any(String),
+            }),
+          ])
+        );
+      });
   });
 
   //need to test search endpoint and patch endpoint, about date control
